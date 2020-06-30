@@ -483,7 +483,7 @@ public:
 
 		ResetLevel();
 
-		levelData[0] = levelArt.GetPixel(0, 0);
+		//levelData[0] = levelArt.GetPixel(0, 0);
 
 		return true;
 	}
