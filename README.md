@@ -1,5 +1,5 @@
 # TypeArt
 A game of stressful pixel art
 
-This game using the olcPixelGameEngine
+This game uses the olcPixelGameEngine
 https://github.com/OneLoneCoder/olcPixelGameEngine
