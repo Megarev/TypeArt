@@ -29,7 +29,7 @@ public:
 			directions.push_back((rand() % 4) + 49);
 		}
 
-		score = 1024;
+		score = 0;
 	}
 
 	void SetTextPosition(const olc::vf2d& pos) { textPos = pos; }
@@ -56,6 +56,7 @@ private:
 	LevelGenerator level;
 	std::vector<olc::Pixel> levelData;
 	LevelArt levelArt;
+	olc::Sprite* frontSprite = nullptr;
 
 	int size;
 	float speed;
@@ -75,14 +76,9 @@ private:
 	void ResetLevel() {
 		levelData.clear();
 
-		std::cout << ScreenWidth() << std::endl;
-		std::cout << ScreenHeight() << std::endl;
+		frontSprite = new olc::Sprite((ScreenWidth() / size), (ScreenHeight() / size - 3));
 
-		for (int i = 0; i < (ScreenWidth() / size) * (ScreenHeight() / size - 3); i++) {
-			levelData.push_back(olc::BLACK);
-		}
-
-		levelData[0] = levelArt.GetPixel(0, 0, ScreenWidth() / size);
+		frontSprite->SetPixel(0, 0, levelArt.GetPixelInSprite(0, 0));
 
 		playerPos = { 0, 0 };
 	}
@@ -142,19 +138,13 @@ public:
 				playerPos.y -= size;
 			}
 
-			levelData[(playerPos.y / size) * (ScreenWidth() / size) + (playerPos.x / size)] = levelArt.GetPixel(playerPos.x / size, playerPos.y / size, ScreenWidth() / size);
+			frontSprite->SetPixel((playerPos.x / size), (playerPos.y / size), levelArt.GetPixelInSprite(playerPos.x / size, playerPos.y / size));
 		}
 
 		speed += (GetKey(olc::W).bPressed - GetKey(olc::S).bPressed);
 	}
 
 	bool OnUserUpdate(float dt) override {
-
-		auto GetPixel = [&](int x, int y) {
-			if (x < 0 || x > ScreenWidth() / size || y < 0 || y > ScreenHeight() / size) return olc::BLACK;
-			
-			return levelData[y * (ScreenWidth() / size) + x];
-		};
 
 		//Input
 		Input(dt);
@@ -183,9 +173,10 @@ public:
 
 		for (int i = 0; i < ScreenHeight() / size - 4; i++) {
 			for (int j = 0; j < ScreenWidth() / size; j++) {
-				FillRect((int)viewMove.x + j * size, (int)viewMove.y + i * size, size, size, GetPixel(j, i));
+				FillRect((int)viewMove.x + j * size, (int)viewMove.y + i * size, size, size, frontSprite->GetPixel(j, i));
 			}
 		}
+
 		FillRect((int)viewMove.x + playerPos.x, (int)viewMove.y + playerPos.y, size, size, olc::MAGENTA);
 
 		for (int i = 0; i < (int)level.GetDirections().size(); i++) {
