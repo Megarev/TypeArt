@@ -78,13 +78,11 @@ private:
 		std::cout << ScreenWidth() << std::endl;
 		std::cout << ScreenHeight() << std::endl;
 
-		//for (int i = 0; i < (ScreenWidth() / size) * (ScreenHeight() / size - 3); i++) {
-		//	levelData.push_back(olc::BLACK);
-		//}
+		for (int i = 0; i < (ScreenWidth() / size) * (ScreenHeight() / size - 3); i++) {
+			levelData.push_back(olc::BLACK);
+		}
 
-		//levelData[0] = levelArt.GetPixel(0, 0, ScreenWidth() / size);
-
-		levelData = levelArt.GetPixels();
+		levelData[0] = levelArt.GetPixel(0, 0, ScreenWidth() / size);
 
 		playerPos = { 0, 0 };
 	}
@@ -109,7 +107,6 @@ public:
 		levelArt.Initialize(LevelArt::MoonLight);
 
 		ResetLevel();
-		playerPos = { 31 * size, 31 * size };
 
 		return true;
 	}
@@ -172,11 +169,11 @@ public:
 		}
 
 		if (level.GetTextPosition().x > ScreenWidth()) {
-			//Sleep(1000);
-			//level.SetTextPosition({ -5.0f * size, level.GetTextPosition().y });
-			//level.Initialize();
+			Sleep(1000);
+			level.SetTextPosition({ -5.0f * size, level.GetTextPosition().y });
+			level.Initialize();
 
-			//ResetLevel();
+			ResetLevel();
 		}
 
 		viewMove *= 0.9f;
