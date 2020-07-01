@@ -3,10 +3,7 @@
 
 class LevelArt {
 private:
-	std::vector<olc::Pixel> pixels;
-
-	void LevelBall();
-	void LevelLight();
+	olc::Sprite* backSprite = nullptr;
 public:
 	enum LevelType {
 		Ball,
@@ -16,9 +13,5 @@ public:
 	LevelArt() {}
 
 	void Initialize(int type);
-	olc::Pixel GetPixel(int x, int y, int w) const;
-	void SetPixel(int x, int y, olc::Pixel, int w);
-
-	std::vector<olc::Pixel> GetPixels() const;
-
+	olc::Pixel GetPixelInSprite(int x, int y) const;
 };
