@@ -5,13 +5,14 @@ MenuState::MenuState(olc::PixelGameEngine* p)
 
 	menuState = MainLevels;
 	nLevels = LevelManager::Get().GetNLevels();
-	LevelManager::Get().SetIsLevelLoaded(false);
+	//LevelManager::Get().SetIsLevelLoaded(false);
 	index = 0;
 }
 
 void MenuState::Move(int direction) {
 
-	int n = (menuState == SavedLevels) ? LevelManager::Get().GetImages().size() : nLevels;
+	//int n = (menuState == SavedLevels) ? LevelManager::Get().GetImages().size() : nLevels;
+	int n = nLevels;
 
 	switch (direction) {
 	case 1: //Down
@@ -31,7 +32,7 @@ void MenuState::Input() {
 	int cursorDir = (pge->GetKey(olc::DOWN).bPressed - pge->GetKey(olc::UP).bPressed);
 	Move(std::move(cursorDir));
 
-	if (LevelManager::Get().GetImages().size() > 0) {
+	/*if (LevelManager::Get().GetImages().size() > 0) {
 		if (pge->GetKey(olc::RIGHT).bPressed) menuState = SavedLevels;
 		else if (pge->GetKey(olc::LEFT).bPressed) menuState = MainLevels;
 	}
@@ -47,13 +48,13 @@ void MenuState::Input() {
 
 			SetState(Play);
 		}
-	}
+	}*/
 }
 
 void MenuState::Logic(float dt) {
 	//If player has selected a level, enter play state
 	if (pge->GetKey(olc::ENTER).bPressed || pge->GetKey(olc::SPACE).bPressed) {
-		if (menuState == MainLevels) {
+		/*if (menuState == MainLevels) {
 			if (LevelManager::Get().GetPlayableLevelState(index)) {
 				LevelManager::Get().SetIsInSaveLevels(false);
 				LevelManager::Get().SetLevel(index);
@@ -63,7 +64,10 @@ void MenuState::Logic(float dt) {
 		else {
 			LevelManager::Get().SetIsInSaveLevels(true);
 			SetState(Play);
-		}
+		}*/
+
+		LevelManager::Get().SetLevel(index);
+		SetState(Play);
 	}
 }
 
@@ -73,11 +77,13 @@ void MenuState::Render() {
 	//Draw Selection cursor
 	pge->FillTriangle(x, y, x + 4, y + 4, x, y + 8);
 
-	int n = (menuState == SavedLevels) ? LevelManager::Get().GetImages().size() : nLevels;
+	//int n = (menuState == SavedLevels) ? LevelManager::Get().GetImages().size() : nLevels;
+	int n = nLevels;
 
 	for (int i = 0; i < n; i++) {
 
-		std::string name = (menuState == SavedLevels) ? LevelManager::Get().GetImageName(i) : GetName(i);
+		//std::string name = (menuState == SavedLevels) ? LevelManager::Get().GetImageName(i) : GetName(i);
+		std::string name = GetName(i);
 
 		int posX = x + (i == index) ? 15 : 10;
 		int posY = 8 * i;
