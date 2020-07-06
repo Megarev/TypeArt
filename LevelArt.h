@@ -14,6 +14,7 @@ public:
 	LevelArt();
 
 	void Initialize(int type);
+	void Initialize(const std::string& filepath);
 	olc::Pixel GetPixelInSprite(int x, int y) const;
 	olc::Sprite* GetSprite() const;
 
