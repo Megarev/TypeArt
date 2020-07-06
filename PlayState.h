@@ -4,7 +4,6 @@
 #include "LevelGenerator.h"
 #include "LevelManager.h"
 #include "Player.h"
-#include <Windows.h>
 
 class PlayState : public GameState {
 private:
