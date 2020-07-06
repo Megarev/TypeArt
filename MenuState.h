@@ -2,11 +2,18 @@
 #include "GameState.h"
 #include "LevelArt.h"
 #include "LevelManager.h"
+#include "ImageLoader.h"
+#include <optional>
 
 class MenuState : public GameState {
 private:
 	int index; //Selected index
 	olc::vi2d pos; //Position of selection cursor
+
+	enum Menu {
+		MainLevels = 1,
+		SavedLevels = -1
+	} menuState;
 
 	int nLevels;
 

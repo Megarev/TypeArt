@@ -20,7 +20,20 @@ PlayState::PlayState(olc::PixelGameEngine* p)
 
 	level.SetTextPosition({ 0.0f, pge->ScreenHeight() - (3.0f * size + 4.0f) });
 
-	levelArt.Initialize(LevelManager::Get().GetSelectedLevel());
+	//If file is opened by file explorer
+	if (LevelManager::Get().GetIsLevelLoaded()) {
+		levelArt.Initialize(LevelManager::Get().GetImageFilePath());
+	}
+	else {
+		//If level is opened from the saved Levels menu
+		if (LevelManager::Get().GetIsInSaveLevels()) {
+			levelArt.Initialize(LevelManager::Get().GetImageFilePath());
+		}
+		else {
+			//Open level from main menu
+			levelArt.Initialize(LevelManager::Get().GetSelectedLevel());
+		}
+	}
 
 	for (int i = 0; i < player.nSize; i++) {
 		for (int j = 0; j < player.nSize; j++) {
@@ -51,7 +64,9 @@ void PlayState::Input() {
 
 		if (level.GetDirections().size() == 0) {
 			Sleep(500);
-			LevelManager::Get().SetNextLevelState(true);
+			if (!LevelManager::Get().GetIsLevelLoaded()) {
+				LevelManager::Get().SetNextLevelState(true);
+			}
 			SetState(Menu);
 		}
 	}
@@ -59,6 +74,8 @@ void PlayState::Input() {
 }
 
 void PlayState::Logic(float dt) {
+	dt = std::fminf(dt, 2.0f);
+
 	level.MoveText(speed * dt);
 
 	if (level.GetTextPosition().x > pge->ScreenWidth()) {

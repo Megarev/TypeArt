@@ -24,6 +24,11 @@ public:
 
 	bool OnUserUpdate(float dt) override {
 
+		if (state->isFileLoaded) {
+			LevelManager::Get().SaveLevelToFile("data.txt");
+			state->SetIsFileLoaded(false);
+		}
+
 		if (state->isStateChanged) {
 			switch (state->state) {
 			case GameState::Menu:

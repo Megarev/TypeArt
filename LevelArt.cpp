@@ -16,6 +16,10 @@ void LevelArt::Initialize(int type) {
     }
 }
 
+void LevelArt::Initialize(const std::string& filepath) {
+    backSprite = new olc::Sprite(filepath);
+}
+
 olc::Pixel LevelArt::GetPixelInSprite(int x, int y) const {
     return backSprite->GetPixel(x, y);
 }
