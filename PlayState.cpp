@@ -46,7 +46,6 @@ PlayState::PlayState(olc::PixelGameEngine* p)
 
 void PlayState::Input() {
 	if (pge->GetKey(olc::ESCAPE).bPressed) {
-		Sleep(500);
 		SetState(Menu);
 	}
 
@@ -65,7 +64,6 @@ void PlayState::Input() {
 		}
 
 		if (level.GetDirections().size() == 0) {
-			Sleep(500);
 			LevelManager::Get().SetNextLevelState(true);
 			//if (!LevelManager::Get().GetIsLevelLoaded()) {}
 			SetState(Menu);
@@ -80,7 +78,6 @@ void PlayState::Logic(float dt) {
 	level.MoveText(speed * dt);
 
 	if (level.GetTextPosition().x > pge->ScreenWidth()) {
-		Sleep(1000);
 		SetState(Menu);
 	}
 }
