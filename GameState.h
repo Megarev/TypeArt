@@ -8,14 +8,14 @@ public:
 		Play
 	} state;
 	bool isStateChanged;
-	bool isFileLoaded;
+	//bool isFileLoaded;
 
 	olc::PixelGameEngine* pge;
 
 	GameState(olc::PixelGameEngine* p);
 
 	void SetState(State newState);
-	void SetIsFileLoaded(bool state);
+	//void SetIsFileLoaded(bool state);
 
 	virtual void Input() {}
 	virtual void Logic(float) = 0;

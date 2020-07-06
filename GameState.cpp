@@ -3,7 +3,7 @@
 GameState::GameState(olc::PixelGameEngine* p)
 	: pge(p) {
 	isStateChanged = false;
-	isFileLoaded = false;
+	//isFileLoaded = false;
 }
 
 void GameState::SetState(State newState) {
@@ -11,6 +11,6 @@ void GameState::SetState(State newState) {
 	isStateChanged = true;
 }
 
-void GameState::SetIsFileLoaded(bool state) {
-	isFileLoaded = state;
-}
+//void GameState::SetIsFileLoaded(bool state) {
+//	isFileLoaded = state;
+//}

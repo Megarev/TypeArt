@@ -31,18 +31,18 @@ public:
 	int GetSelectedLevel() const;
 	int GetNLevels() const;
 
-	void LoadLevel(const std::string& str);
-	std::string GetImageFilePath() const;
+	//void LoadLevel(const std::string& str);
+	//std::string GetImageFilePath() const;
 
-	std::vector<std::string> GetImages() const;
-	std::string GetImageName(int index);
+	//std::vector<std::string> GetImages() const;
+	//std::string GetImageName(int index);
 
-	void SaveLevelToFile(const std::string& filepath);
-	void LoadLevelFromFile(const std::string& filepath);
+	//void SaveLevelToFile(const std::string& filepath);
+	//void LoadLevelFromFile(const std::string& filepath);
 	
-	void SetIsLevelLoaded(bool state);
-	bool GetIsLevelLoaded() const;
+	//void SetIsLevelLoaded(bool state);
+	//bool GetIsLevelLoaded() const;
 
-	void SetIsInSaveLevels(bool state);
-	bool GetIsInSaveLevels() const;
+	//void SetIsInSaveLevels(bool state);
+	//bool GetIsInSaveLevels() const;
 };
