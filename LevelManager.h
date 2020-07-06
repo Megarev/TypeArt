@@ -1,8 +1,6 @@
 #pragma once
 #include <vector>
 #include <string>
-#include <fstream>
-#include <iostream>
 
 class LevelManager {
 private:
@@ -11,9 +9,9 @@ private:
 	int nLevels; //Preloaded levels
 
 	std::vector<bool> playableLevels;
-	std::vector<std::string> loadedLevels;
+	//std::vector<std::string> loadedLevels;
 	int selectedLevel;
-	bool isInSaveLevels, isLevelLoaded; //Is a level loaded using image loader
+	//bool isInSaveLevels, isLevelLoaded; //Is a level loaded using image loader
 public:
 	static LevelManager& Get() {
 		static LevelManager levelManager;
