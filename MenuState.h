@@ -2,7 +2,6 @@
 #include "GameState.h"
 #include "LevelArt.h"
 #include "LevelManager.h"
-#include <optional>
 
 class MenuState : public GameState {
 private:
