@@ -8,7 +8,7 @@ public:
 	enum LevelType {
 		Ball,
 		MoonLight,
-		FlatHill
+		FlatHill,
 	};
 
 	LevelArt();

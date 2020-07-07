@@ -5,7 +5,8 @@ class GameState {
 public:
 	enum State {
 		Menu,
-		Play
+		Play,
+		Settings
 	} state;
 	bool isStateChanged;
 	//bool isFileLoaded;

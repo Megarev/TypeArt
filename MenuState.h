@@ -8,11 +8,6 @@ private:
 	int index; //Selected index
 	olc::vi2d pos; //Position of selection cursor
 
-	enum Menu {
-		MainLevels = 1,
-		SavedLevels = -1
-	} menuState;
-
 	int nLevels;
 
 	std::string names[3] = { //Level names
