@@ -6,6 +6,7 @@
 #include "LevelGenerator.h"
 #include "Player.h"
 #include "PlayState.h"
+#include "SettingsState.h"
 #include "MenuState.h"
 #include "LevelManager.h"
 

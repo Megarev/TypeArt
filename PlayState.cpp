@@ -5,13 +5,25 @@ void PlayState::SetTile(int x, int y, bool state = false) {
 	positions[y * (pge->ScreenWidth() / size) + x] = state;
 }
 
+float PlayState::RandomRange(float r1, float r2) {
+	std::random_device rd;
+	std::mt19937 m(rd());
+	std::uniform_real_distribution<float> value(r1, r2);
+
+	return value(m);
+}
+
 PlayState::PlayState(olc::PixelGameEngine* p) 
 	: GameState(p) {
 
 	player.pos = { 0, 0 };
 	size = 4;
-	speed = 30.0f;
 	positions.clear();
+
+	viewMoveMax = 5.0f;
+	isChangeState = false;
+
+	nInputs = 4;
 
 	for (int i = 0; i < (pge->ScreenWidth() / size) * (int)(pge->ScreenHeight() / size - 4); i++) { positions.push_back(0); }
 	positions[0] = true;
@@ -19,21 +31,6 @@ PlayState::PlayState(olc::PixelGameEngine* p)
 	level.Initialize((int)(positions.size() / (player.nSize * player.nSize)));
 
 	level.SetTextPosition({ 0.0f, pge->ScreenHeight() - (3.0f * size + 4.0f) });
-
-	//If file is opened by file explorer
-	//if (LevelManager::Get().GetIsLevelLoaded()) {
-	//	levelArt.Initialize(LevelManager::Get().GetImageFilePath());
-	//}
-	//else {
-	//	//If level is opened from the saved Levels menu
-	//	if (LevelManager::Get().GetIsInSaveLevels()) {
-	//		levelArt.Initialize(LevelManager::Get().GetImageFilePath());
-	//	}
-	//	else {
-	//		//Open level from main menu
-	//		levelArt.Initialize(LevelManager::Get().GetSelectedLevel());
-	//	}
-	//}
 
 	levelArt.Initialize(LevelManager::Get().GetSelectedLevel());
 
@@ -51,7 +48,32 @@ void PlayState::Input() {
 
 	const olc::Key& dir = (olc::Key)level.GetCurrentDirection();
 
-	if (pge->GetKey(dir).bPressed) {
+	uint8_t keyState = olc::NONE;
+	/*
+	  keyState == 0 => No key is pressed
+	  keyState == 1 => Correct key is pressed
+	  keyState == 2 => Incorrect key is pressed
+	*/
+	
+	for (uint32_t i = 0; i < nInputs; i++) {
+		if (pge->GetKey(inputs[i]).bPressed) {
+			if (inputs[i] == dir) {
+				keyState = 1;
+			}
+			else {
+				keyState = 2;
+			}
+		}
+	}
+
+	if (keyState == 2) {
+		speed += 0.25f;
+
+		viewMove.x = RandomRange(-viewMoveMax, viewMoveMax);
+		viewMove.y = RandomRange(-viewMoveMax, viewMoveMax);
+	}
+
+	if (keyState == 1) {
 		level.Logic({ level.GetTextPosition().x - 10.0f, level.GetTextPosition().y });
 
 		player.Move(pge->ScreenWidth(), pge->ScreenHeight(), 2 * size);
@@ -62,46 +84,55 @@ void PlayState::Input() {
 				SetTile(player.pos.x / size + j, player.pos.y / size + i, true);
 			}
 		}
-
-		if (level.GetDirections().size() == 0) {
-			LevelManager::Get().SetNextLevelState(true);
-			//if (!LevelManager::Get().GetIsLevelLoaded()) {}
-			SetState(Menu);
-		}
 	}
-	speed += (pge->GetKey(olc::W).bPressed - pge->GetKey(olc::S).bPressed);
 }
 
 void PlayState::Logic(float dt) {
 	dt = std::fminf(dt, 2.0f);
 
-	level.MoveText(speed * dt);
+	if (isChangeState) {
+		accumulator += dt;
+		
+		if (accumulator > 1.0f) SetState(Menu);
+	}
+
+	if (level.GetDirections().size() == 0) {
+		LevelManager::Get().SetNextLevelState(true);
+		isChangeState = true;
+	}
+
+	if (!isChangeState) level.MoveText(speed * dt);
 
 	if (level.GetTextPosition().x > pge->ScreenWidth()) {
-		SetState(Menu);
+		isChangeState = true;
 	}
+
+	viewMove *= 0.99f;
+	if (viewMove.x < 0.1f) viewMove.x = 0.0f;
+	if (viewMove.y < 0.1f) viewMove.y = 0.0f;
 }
 
 void PlayState::Render() {
 	//Draw the front sprite
-	pge->DrawSprite(0, 0, levelArt.GetSprite(), size);
+	pge->DrawSprite(0 + viewMove.x, 0 + viewMove.y, levelArt.GetSprite(), size);
 
 	for (int i = 0; i < pge->ScreenHeight() / size - 4; i++) {
 		for (int j = 0; j < pge->ScreenWidth() / size; j++) {
 			if (positions[i * (pge->ScreenWidth() / size) + j]) continue;
 
-			pge->FillRect(j * size, i * size, size, size, olc::BLACK);
+			pge->FillRect(j * size + viewMove.x, i * size + viewMove.y, size, size, olc::BLACK);
 		}
 	}
 
 	//Draw player
-	pge->FillRect(player.pos.x, player.pos.y, 2 * size, 2 * size, olc::MAGENTA);
+	pge->FillRect(player.pos.x + viewMove.x, player.pos.y + viewMove.y, 2 * size, 2 * size, olc::MAGENTA);
 
 	//Draw the level
 	for (int i = 0; i < (int)level.GetDirections().size(); i++) {
 		const int& dir = level.GetCurrentDirection(i);
 
 		olc::Pixel color = olc::WHITE;
+		if (i == 0) color = olc::RED;
 
 		auto [x, y] = (olc::vi2d)level.GetTextPosition();
 		int distance = 10;
@@ -115,10 +146,10 @@ void PlayState::Render() {
 		case Up:    str = "^"; break;
 		}
 
-		pge->DrawString(x - i * distance, y, std::move(str), color);
+		pge->DrawString(x - i * distance + viewMove.x, y + viewMove.y, std::move(str), color);
 	}
 
 	//Draw line and score
-	pge->DrawLine(0, pge->ScreenHeight() - (4 * size + 1), pge->ScreenWidth(), pge->ScreenHeight() - (4 * size + 1), olc::Pixel(200, 200, 200));
-	pge->DrawString(0, pge->ScreenHeight() - (3 * size - 3), "Score: " + std::to_string(level.GetScore()), olc::DARK_CYAN);
+	pge->DrawLine(0 + viewMove.x, pge->ScreenHeight() - (4 * size + 1) + viewMove.y, pge->ScreenWidth(), pge->ScreenHeight() - (4 * size + 1), olc::Pixel(200, 200, 200));
+	pge->DrawString(0 + viewMove.y, pge->ScreenHeight() - (3 * size - 3) + viewMove.y, "Score: " + std::to_string(level.GetScore()), olc::DARK_CYAN);
 }

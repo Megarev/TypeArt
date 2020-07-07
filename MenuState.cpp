@@ -3,27 +3,26 @@
 MenuState::MenuState(olc::PixelGameEngine* p)
 	: GameState(p) {
 
-	menuState = MainLevels;
 	nLevels = LevelManager::Get().GetNLevels();
-	//LevelManager::Get().SetIsLevelLoaded(false);
 	index = 0;
+
+	pos = { 0, 8 + 8 * index };
 }
 
 void MenuState::Move(int direction) {
 
-	//int n = (menuState == SavedLevels) ? LevelManager::Get().GetImages().size() : nLevels;
 	int n = nLevels;
 
 	switch (direction) {
 	case 1: //Down
 		index++;
-		index = (int)std::fminf(index, n - 1);
-		pos = { 0, 8 * index };
+		if (index > n - 1) index = n - 1;
+		pos = { 0, 10 + 8 * index };
 		break;
 	case -1: //Up
 		index--;
-		index = (int)std::fmaxf(0, index);
-		pos = { 0, 8 * index };
+		if (index < 0) index = 0;
+		pos = { 0, 10 + 8 * index };
 		break;
 	}
 }
@@ -32,42 +31,18 @@ void MenuState::Input() {
 	int cursorDir = (pge->GetKey(olc::DOWN).bPressed - pge->GetKey(olc::UP).bPressed);
 	Move(std::move(cursorDir));
 
-	/*if (LevelManager::Get().GetImages().size() > 0) {
-		if (pge->GetKey(olc::RIGHT).bPressed) menuState = SavedLevels;
-		else if (pge->GetKey(olc::LEFT).bPressed) menuState = MainLevels;
+	if (pge->GetKey(olc::Z).bPressed) {
+		SetState(Settings);
 	}
-
-	if (pge->GetKey(olc::O).bPressed) {
-		
-		const std::string& filepath = ImageLoader::Get().LoadFile();
-
-		if (filepath != "") {
-			LevelManager::Get().LoadLevel(filepath);
-			LevelManager::Get().SetIsLevelLoaded(true);
-			SetIsFileLoaded(true);
-
-			SetState(Play);
-		}
-	}*/
 }
 
 void MenuState::Logic(float dt) {
 	//If player has selected a level, enter play state
 	if (pge->GetKey(olc::ENTER).bPressed || pge->GetKey(olc::SPACE).bPressed) {
-		/*if (menuState == MainLevels) {
-			if (LevelManager::Get().GetPlayableLevelState(index)) {
-				LevelManager::Get().SetIsInSaveLevels(false);
-				LevelManager::Get().SetLevel(index);
-				SetState(Play);
-			}
-		}
-		else {
-			LevelManager::Get().SetIsInSaveLevels(true);
+		if (LevelManager::Get().GetPlayableLevelState(index)) {
+			LevelManager::Get().SetLevel(index);
 			SetState(Play);
-		}*/
-
-		LevelManager::Get().SetLevel(index);
-		SetState(Play);
+		}
 	}
 }
 
@@ -76,25 +51,24 @@ void MenuState::Render() {
 
 	//Draw Selection cursor
 	pge->FillTriangle(x, y, x + 4, y + 4, x, y + 8);
-
-	//int n = (menuState == SavedLevels) ? LevelManager::Get().GetImages().size() : nLevels;
+	pge->DrawString(x + 12, 0, "Level Select");
+	pge->DrawLine(0, 8, pge->ScreenWidth(), 8);
 	int n = nLevels;
 
 	for (int i = 0; i < n; i++) {
 
-		//std::string name = (menuState == SavedLevels) ? LevelManager::Get().GetImageName(i) : GetName(i);
 		std::string name = GetName(i);
 
 		int posX = x + (i == index) ? 15 : 10;
-		int posY = 8 * i;
+		int posY = 10 + 8 * i;
 
-		olc::Pixel color = (i == index) ? olc::CYAN : olc::BLUE;;
-		if (!LevelManager::Get().GetPlayableLevelState(i) && menuState == MainLevels) color = olc::GREY;
-		pge->DrawString(posX, posY, name, color);
+		olc::Pixel color = (i == index) ? olc::CYAN : olc::BLUE;
+		if (!LevelManager::Get().GetPlayableLevelState(i)) color = olc::GREY;
+		pge->DrawString(posX, posY, std::move(name), color);
 	}
 }
 
 std::string MenuState::GetName(int n) {
-	n = (int)std::fminf(n, nLevels);
+	if (n > nLevels - 1) n = nLevels - 1;
 	return names[n];
 }
