@@ -1,8 +1,15 @@
 #include "LevelGenerator.h"
 
 void LevelGenerator::Generate() {
-	int dir = (rand() % 4) + 49;
-	directions.push_back(std::move(dir));
+
+	int dir = 0;
+	switch (textType) {
+	case 0: dir = rand() % 4; break;
+	case 1: dir = (rand() % 4) + 4; break;
+	case 2: dir = rand() % 8; break;
+	}
+
+	directions.push_back(inputs[dir]);
 }
 
 void LevelGenerator::Initialize(int n) {

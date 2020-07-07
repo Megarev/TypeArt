@@ -23,8 +23,6 @@ PlayState::PlayState(olc::PixelGameEngine* p)
 	viewMoveMax = 5.0f;
 	isChangeState = false;
 
-	nInputs = 4;
-
 	for (int i = 0; i < (pge->ScreenWidth() / size) * (int)(pge->ScreenHeight() / size - 4); i++) { positions.push_back(0); }
 	positions[0] = true;
 
@@ -140,10 +138,14 @@ void PlayState::Render() {
 		std::string str;
 
 		switch (dir) {
-		case Right: str = ">"; break;
-		case Down:  str = "V"; break;
-		case Left:  str = "<"; break;
-		case Up:    str = "^"; break;
+		case olc::RIGHT: str = ">"; break;
+		case olc::DOWN:  str = "V"; break;
+		case olc::LEFT:  str = "<"; break;
+		case olc::UP:    str = "^"; break;
+		case olc::W:	 str = "W"; break;
+		case olc::A:	 str = "A"; break;
+		case olc::S:	 str = "S"; break;
+		case olc::D:	 str = "D"; break;
 		}
 
 		pge->DrawString(x - i * distance + viewMove.x, y + viewMove.y, std::move(str), color);

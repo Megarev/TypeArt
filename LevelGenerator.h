@@ -1,15 +1,17 @@
 #pragma once
 #include "../libs/olcPixelGameEngine.h"
+#include "GameSettings.h"
 #include <deque>
-
-enum Direction {
-	Up = 49, Down = 50, Left = 51, Right = 52
-};
 
 class LevelGenerator {
 private:
 	std::deque<uint8_t> directions;
 	olc::vf2d textPos;
+
+	const olc::Key inputs[8] = {
+		olc::UP, olc::DOWN, olc::LEFT, olc::RIGHT,
+		olc::W, olc::A, olc::S, olc::D
+	};
 
 	int score;
 public:
