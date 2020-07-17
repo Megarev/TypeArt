@@ -42,6 +42,7 @@ std::string ImageLoader::Load_File() {
 	FILE* f = popen("zenity --file-selection", "r");
 	fgets(filename, 1024, f);
 
-	return filename;
+	std::string filepath = filename;
+	return filepath;
 }
 #endif
