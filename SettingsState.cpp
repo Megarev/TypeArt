@@ -5,7 +5,7 @@ float speedMedium = 30.0f;
 float speedHard = 45.0f;
 
 float speed = speedMedium;
-uint8_t textType = 2;
+uint8_t textType = 1;
 
 SettingsState::SettingsState(olc::PixelGameEngine* p)
 	: GameState(p) {

@@ -13,7 +13,7 @@ private:
 	std::vector<bool> playableLevels;
 	std::vector<std::string> loadedLevels;
 	int selectedLevel;
-	bool isInSaveLevels, isLevelLoaded; //Is a level loaded using image loader
+	bool isLevelLoaded; //Is a level loaded using image loader
 public:
 	static LevelManager& Get() {
 		static LevelManager levelManager;
@@ -31,18 +31,10 @@ public:
 	int GetSelectedLevel() const;
 	int GetNLevels() const;
 
-	//void LoadLevel(const std::string& str);
-	//std::string GetImageFilePath() const;
+	bool GetIsLevelLoaded() const;
+	void SetIsLevelLoaded(bool state);
 
-	//std::vector<std::string> GetImages() const;
-	//std::string GetImageName(int index);
-
-	//void SaveLevelToFile(const std::string& filepath);
-	//void LoadLevelFromFile(const std::string& filepath);
-	
-	//void SetIsLevelLoaded(bool state);
-	//bool GetIsLevelLoaded() const;
-
-	//void SetIsInSaveLevels(bool state);
-	//bool GetIsInSaveLevels() const;
+	void SetLevelLoaded(const std::string& filepath);
+	void SetLevelLoaded(const std::wstring& filepath);
+	std::string GetLevelLoaded() const;
 };

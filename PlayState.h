@@ -27,6 +27,7 @@ private:
 	olc::vf2d viewMove;
 	float viewMoveMax;
 
+	float dSpeed;
 	int size;
 public:
 	PlayState(olc::PixelGameEngine* p);

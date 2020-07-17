@@ -30,7 +30,12 @@ PlayState::PlayState(olc::PixelGameEngine* p)
 
 	level.SetTextPosition({ 0.0f, pge->ScreenHeight() - (3.0f * size + 4.0f) });
 
-	levelArt.Initialize(LevelManager::Get().GetSelectedLevel());
+	if (LevelManager::Get().GetIsLevelLoaded()) {
+		levelArt.Initialize(LevelManager::Get().GetLevelLoaded());
+	}
+	else {
+		levelArt.Initialize(LevelManager::Get().GetSelectedLevel());
+	}
 
 	for (int i = 0; i < player.nSize; i++) {
 		for (int j = 0; j < player.nSize; j++) {
@@ -65,7 +70,7 @@ void PlayState::Input() {
 	}
 
 	if (keyState == 2) {
-		speed += 0.25f;
+		dSpeed += 0.25f;
 
 		viewMove.x = RandomRange(-viewMoveMax, viewMoveMax);
 		viewMove.y = RandomRange(-viewMoveMax, viewMoveMax);
@@ -95,11 +100,11 @@ void PlayState::Logic(float dt) {
 	}
 
 	if (level.GetDirections().size() == 0) {
-		LevelManager::Get().SetNextLevelState(true);
+		if (!LevelManager::Get().GetIsLevelLoaded()) LevelManager::Get().SetNextLevelState(true);
 		isChangeState = true;
 	}
 
-	if (!isChangeState) level.MoveText(speed * dt);
+	if (!isChangeState) level.MoveText((speed + dSpeed) * dt);
 
 	if (level.GetTextPosition().x > pge->ScreenWidth()) {
 		isChangeState = true;
