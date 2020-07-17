@@ -1,13 +1,8 @@
 #include "LevelArt.h"
-#include <Windows.h>
 
 LevelArt::LevelArt() {}
 
 void LevelArt::Initialize(int type) {
-
-    wchar_t filepath[100];
-    ::GetCurrentDirectory(100, filepath);
-    std::cout << filepath << std::endl;
 
     switch (type) {
     case Ball:
