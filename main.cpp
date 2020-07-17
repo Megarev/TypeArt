@@ -17,7 +17,7 @@ public:
 		LevelManager::Get().Initialize();
 		LevelManager::Get().SetPlayableLevelState(0, true);
 
-		SetGameState<MenuState>();
+		SetGameState<StartState>();
 
 		return true;
 	}
@@ -34,6 +34,9 @@ public:
 				break;
 			case GameState::Settings:
 				SetGameState<SettingsState>();
+				break;
+			case GameState::Start:
+				SetGameState<StartState>();
 				break;
 			}
 			state->isStateChanged = false;

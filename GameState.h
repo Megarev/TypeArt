@@ -4,6 +4,7 @@
 class GameState {
 public:
 	enum State {
+		Start,
 		Menu,
 		Play,
 		Settings

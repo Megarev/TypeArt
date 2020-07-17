@@ -9,12 +9,14 @@ public:
 		Ball,
 		MoonLight,
 		FlatHill,
+		SimpleRoom
 	};
 
 	LevelArt();
 
 	void Initialize(int type);
 	void Initialize(const std::string& filepath);
+	void Initialize(const std::wstring& filepath);
 	olc::Pixel GetPixelInSprite(int x, int y) const;
 	olc::Sprite* GetSprite() const;
 
