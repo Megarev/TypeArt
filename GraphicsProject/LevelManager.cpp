@@ -9,6 +9,7 @@ LevelManager::LevelManager() {
 	};
 
 	nLevels = (int)levels.size();
+	isImageMadeInEditor = false;
 }
 
 void LevelManager::Initialize() {
@@ -96,6 +97,22 @@ olc::Pixel* LevelManager::GetSprite(int n) const {
 	}
 
 	return nullptr;
+}
+
+void LevelManager::SaveSprite(olc::Pixel* sprite) {
+	sprites.push_back(sprite);
+}
+
+std::size_t LevelManager::GetNImages() const {
+	return sprites.size();
+}
+
+bool& LevelManager::GetisImageMadeInEditor() {
+	return isImageMadeInEditor;
+}
+
+olc::Pixel* LevelManager::GetBackImage() const {
+	return sprites.back();
 }
 
 void LevelManager::Clear() {

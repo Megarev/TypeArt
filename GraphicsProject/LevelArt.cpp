@@ -30,6 +30,10 @@ void LevelArt::Initialize(const std::wstring& filepath) {
     backSprite = new olc::Sprite(std::string(filepath.begin(), filepath.end()));
 }
 
+void LevelArt::Initialize(olc::Pixel* pixels) {
+    backSprite = SpriteFromArray(32, 32, pixels);
+}
+
 olc::Pixel LevelArt::GetPixelInSprite(int x, int y) const {
     return backSprite->GetPixel(x, y);
 }

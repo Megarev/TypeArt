@@ -20,6 +20,8 @@ PlayState::PlayState(olc::PixelGameEngine* p)
 	size = 4;
 	positions.clear();
 
+	isPaused = false;
+
 	viewMoveMax = 5.0f;
 	isChangeState = false;
 
@@ -32,6 +34,9 @@ PlayState::PlayState(olc::PixelGameEngine* p)
 
 	if (LevelManager::Get().GetIsLevelLoaded()) {
 		levelArt.Initialize(LevelManager::Get().GetLevelLoaded());
+	}
+	else if (LevelManager::Get().GetisImageMadeInEditor()) {
+		levelArt.Initialize(LevelManager::Get().GetBackImage());
 	}
 	else {
 		levelArt.Initialize(LevelManager::Get().GetSelectedLevel());
@@ -48,6 +53,12 @@ void PlayState::Input() {
 	if (pge->GetKey(olc::ESCAPE).bPressed) {
 		SetState(Menu);
 	}
+
+	if (pge->GetKey(olc::P).bPressed) {
+		isPaused = !isPaused;
+	}
+
+	if (isPaused) return;
 
 	const olc::Key& dir = (olc::Key)level.GetCurrentDirection();
 
@@ -104,7 +115,7 @@ void PlayState::Logic(float dt) {
 		isChangeState = true;
 	}
 
-	if (!isChangeState) level.MoveText((speed + dSpeed) * dt);
+	if (!isChangeState && !isPaused) level.MoveText((speed + dSpeed) * dt);
 
 	if (level.GetTextPosition().x > pge->ScreenWidth()) {
 		isChangeState = true;
@@ -159,4 +170,9 @@ void PlayState::Render() {
 	//Draw line and score
 	pge->DrawLine(0 + viewMove.x, pge->ScreenHeight() - (4 * size + 1) + viewMove.y, pge->ScreenWidth(), pge->ScreenHeight() - (4 * size + 1), olc::Pixel(200, 200, 200));
 	pge->DrawString(0 + viewMove.y, pge->ScreenHeight() - (3 * size - 3) + viewMove.y, "Score: " + std::to_string(level.GetScore()), olc::DARK_CYAN);
+
+	if (isPaused) {
+		pge->FillRect(pge->ScreenWidth() / 2 - 32, pge->ScreenHeight() / 2 - 30, 30, 60);
+		pge->FillRect(pge->ScreenWidth() / 2 + 4, pge->ScreenHeight() / 2 - 30, 30, 60);
+	}
 }

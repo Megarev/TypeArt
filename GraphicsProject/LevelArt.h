@@ -1,5 +1,5 @@
 #pragma once
-#include "../libs/olcPixelGameEngine.h"
+#include "olcPixelGameEngine.h"
 #include "LevelManager.h"
 
 class LevelArt {
@@ -23,6 +23,7 @@ public:
 	void Initialize(int type);
 	void Initialize(const std::string& filepath);
 	void Initialize(const std::wstring& filepath);
+	void Initialize(olc::Pixel* pixels);
 	olc::Pixel GetPixelInSprite(int x, int y) const;
 	olc::Sprite* GetSprite() const;
 

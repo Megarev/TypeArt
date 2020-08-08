@@ -1,5 +1,5 @@
 #pragma once
-#include "../libs/olcPixelGameEngine.h"
+#include "olcPixelGameEngine.h"
 
 struct Player {
 	olc::vi2d pos;

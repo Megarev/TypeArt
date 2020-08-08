@@ -17,6 +17,7 @@ private:
 
 	int selectedLevel;
 	bool isLevelLoaded; //Is a level loaded using image loader
+	bool isImageMadeInEditor;
 public:
 	static LevelManager& Get() {
 		static LevelManager levelManager;
@@ -47,4 +48,10 @@ public:
 	std::string GetDir(int n) const;
 
 	olc::Pixel* GetSprite(int n) const;
+
+	void SaveSprite(olc::Pixel* sprite);
+	std::size_t GetNImages() const;
+	olc::Pixel* GetBackImage() const;
+
+	bool& GetisImageMadeInEditor();
 };
