@@ -34,6 +34,7 @@ MenuState::MenuState(olc::PixelGameEngine* p)
 	: GameState(p) {
 
 	LevelManager::Get().SetIsLevelLoaded(false);
+	LevelManager::Get().GetIsImageMadeInEditor() = false;
 	index = 0;
 
 	pos = { 0, 8 + 8 * index };
