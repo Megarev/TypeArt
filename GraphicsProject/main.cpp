@@ -38,6 +38,9 @@ public:
 			case GameState::Start:
 				SetGameState<StartState>();
 				break;
+			case GameState::Editor:
+				SetGameState<EditorState>();
+				break;
 			}
 			state->isStateChanged = false;
 		}
@@ -60,7 +63,7 @@ int main() {
 	srand((unsigned)time(0));
 
 	GameMain game;
-	if (game.Construct(128, 145, 4, 4)) {
+	if (game.Construct(129, 145, 4, 4)) {
 		game.Start();
 	}
 

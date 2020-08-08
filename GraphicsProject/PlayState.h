@@ -13,6 +13,8 @@ private:
 	LevelArt levelArt;
 	Player player;
 
+	bool isPaused;
+
 	std::vector<bool> positions; //Front sprite cover
 	
 	static const int nInputs = 8;

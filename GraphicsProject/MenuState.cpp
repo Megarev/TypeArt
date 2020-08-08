@@ -64,6 +64,9 @@ void MenuState::Input() {
 	if (pge->GetKey(olc::Z).bPressed) {
 		SetState(Settings);
 	}
+	else if (pge->GetKey(olc::X).bPressed) {
+		SetState(Editor);
+	}
 }
 
 void MenuState::Logic(float dt) {

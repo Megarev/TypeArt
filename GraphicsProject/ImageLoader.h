@@ -1,5 +1,5 @@
 #pragma once
-#include "../libs/olcPixelGameEngine.h"
+#include "olcPixelGameEngine.h"
 #include <stdlib.h>
 #include <stdio.h>
 

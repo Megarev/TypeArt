@@ -1,5 +1,5 @@
 #pragma once
-#include "../libs/olcPixelGameEngine.h"
+#include "olcPixelGameEngine.h"
 
 class GameState {
 public:
@@ -7,7 +7,8 @@ public:
 		Start,
 		Menu,
 		Play,
-		Settings
+		Settings,
+		Editor
 	} state;
 	bool isStateChanged;
 	//bool isFileLoaded;
